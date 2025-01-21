@@ -1,7 +1,7 @@
 openapi: "3.1.0"
 info:
   title: Sample API using OpenAPI
-  description: API server built on [Hummingbird](https://hummingbird.codes/), [OracleNIO](https://github.com/lovetodream/oracle-nio) and [Swift OpenAPI Generator](https://github.com/apple/swift-openapi-generator).
+  description: API server built on [Hummingbird](https://hummingbird.codes/) and [Swift OpenAPI Generator](https://github.com/apple/swift-openapi-generator).
   version: 1.0.0
 
 servers:
@@ -9,13 +9,13 @@ servers:
     description: This is the server.
 
 paths:
- # Greetings
+  # Greetings
   # curl http://localhost:8080
   #
   /:
     get:
       summary: Greetings
-      description: Responses with a simple string using emoji. Hello, World! 🌍 
+      description: Responses with a simple string using emoji. Hello, World! 🌍
       operationId: hello
       responses:
         "200":
@@ -24,3 +24,15 @@ paths:
             text/plain:
               schema:
                 type: string
+
+  # Health
+  # curl -i http://localhost:8080/health
+  #
+  /health:
+    get:
+      summary: Server health status
+      description: Responses with 200 OK
+      operationId: healthCheck
+      responses:
+        "200":
+          description: Server health status
