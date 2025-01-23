@@ -70,6 +70,50 @@ paths:
         "500":
           description: Internal server error
 
+    # List
+    # curl http://localhost:8080/api/v1/people
+    #
+    get:
+      summary: List of all people.
+      description: Returns with all people in the database
+      operationId: listPeople
+      responses:
+        "200":
+          description: JSON array of people
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Person"
+  
+  # Show
+  # curl "http://localhost:8080/api/v1/people/2408B278-1518-DB79-E063-485D000A4B80"
+  #
+  /api/v1/people/{id}:
+    get:
+      summary: Show person with id
+      description: Returns the person with specified id
+      operationId: getPersonById
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: JSON array of the person details with specified id
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Person"
+        "404":
+          description: Person has not been found
+        "500":
+          description: Internal server error
+
 components:
   schemas:
     Person:
