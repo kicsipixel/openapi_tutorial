@@ -86,7 +86,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Person"
-  
+
   # Show
   # curl "http://localhost:8080/api/v1/people/2408B278-1518-DB79-E063-485D000A4B80"
   #
@@ -109,6 +109,34 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Person"
+        "404":
+          description: Person has not been found
+        "500":
+          description: Internal server error
+
+    # Update
+    put:
+      summary: Update person with id
+      description: Updates person with specified id
+      operationId: updatePersonById
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: JSON array of the person details to be updated
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Person"
+      responses:
+        "200":
+          description: Person was updated successfully
+        "400":
+          description: Bad request/invalid input
         "404":
           description: Person has not been found
         "500":
