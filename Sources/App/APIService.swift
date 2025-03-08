@@ -146,11 +146,16 @@ struct APIServiceImpl: APIProtocol {
                                 date_of_birth = \(APIServiceImpl.dateFormatter.date(from: dateOfBirth)),
                                 is_active = \(isActive)
                             WHERE id = \(guid)
+                            RETURNING id
                             """
         
-        try await self.client.query(query)
+        let stream = try await self.client.query(query)
         
-        return .ok(.init())
+        if try await stream.decode(UUID.self).first(where: { _ in true }) != nil {
+            return .ok(.init())
+        }
+        
+        return .notFound(.init())
     }
     
     func deletePersonById(_ input: APIService.Operations.deletePersonById.Input) async throws -> APIService.Operations.deletePersonById.Output {

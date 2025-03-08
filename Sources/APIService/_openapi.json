@@ -42,6 +42,191 @@
           }
         }
       }
+    },
+    "/api/v1/people": {
+      "post": {
+        "summary": "Create a person",
+        "description": "Saves person to the database",
+        "operationId": "createPerson",
+        "requestBody": {
+          "description": "JSON array of the person details supposed to be saved",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Person"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Person was saved successfully"
+          },
+          "400": {
+            "description": "Bad request/invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "get": {
+        "summary": "List of all people.",
+        "description": "Returns with all people in the database",
+        "operationId": "listPeople",
+        "responses": {
+          "200": {
+            "description": "JSON array of people",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Person"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/people/{id}": {
+      "get": {
+        "summary": "Show person with id",
+        "description": "Returns the person with specified id",
+        "operationId": "getPersonById",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "JSON array of the person details with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Person"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Person has not been found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update person with id",
+        "description": "Updates person with specified id",
+        "operationId": "updatePersonById",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "JSON array of the person details to be updated",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Person"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Person was updated successfully"
+          },
+          "400": {
+            "description": "Bad request/invalid input"
+          },
+          "404": {
+            "description": "Person has not been found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete person with id",
+        "description": "Deletes person with specified id",
+        "operationId": "deletePersonById",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Person was deleted successfully"
+          },
+          "404": {
+            "description": "Person has not been found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Person": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "number_of_publications": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "object",
+            "properties": {
+              "first_name": {
+                "type": "string"
+              },
+              "last_name": {
+                "type": "string"
+              }
+            }
+          },
+          "date_of_birth": {
+            "type": "string",
+            "format": "date"
+          },
+          "is_active": {
+            "type": "boolean"
+          }
+        }
+      }
     }
   }
 }
