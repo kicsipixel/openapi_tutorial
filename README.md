@@ -15,4 +15,4 @@ Then you can start the server:
 swift run App
 ```
 
-RapidAPI file [attached]().
+RapidAPI file [attached](https://github.com/kicsipixel/openapi_tutorial/blob/crud/OpenAPI.paw).
