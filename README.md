@@ -1,6 +1,6 @@
 # OpenAPI tutorial
 
-The source code for the [article]().
+The source code for the [article](https://medium.com/@kicsipixel/openapi-generator-with-swift-on-server-ca20070cf239).
 
 ### How to use
 Simple start PostgreSQL database in docker using:
