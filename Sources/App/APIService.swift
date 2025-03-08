@@ -43,24 +43,24 @@ struct APIServiceImpl: APIProtocol {
         }
         
         try await client.query(
-      """
-      INSERT INTO openapi_tutorial (
-        id,
-        number_of_publications,
-        first_name,
-        last_name,
-        date_of_birth,
-        is_active
-      )
-      VALUES (
-        \(id),
-        \(numberOfPublications),
-        \(firstName),
-        \(lastName),
-        \(APIServiceImpl.dateFormatter.date(from: dateOfBirth)),
-        \(isActive)
-      )
-      """
+                  """
+                  INSERT INTO openapi_tutorial (
+                    id,
+                    number_of_publications,
+                    first_name,
+                    last_name,
+                    date_of_birth,
+                    is_active
+                  )
+                  VALUES (
+                    \(id),
+                    \(numberOfPublications),
+                    \(firstName),
+                    \(lastName),
+                    \(APIServiceImpl.dateFormatter.date(from: dateOfBirth)),
+                    \(isActive)
+                  )
+                  """
         )
         
         return .created(.init())
@@ -71,17 +71,17 @@ struct APIServiceImpl: APIProtocol {
         var people = [Components.Schemas.Person]()
         
         let stream = try await client.query(
-      """
-      SELECT
-        id,
-        number_of_publications,
-        first_name,
-        last_name,
-        date_of_birth,
-        is_active
-      FROM
-        openapi_tutorial
-      """
+            """
+            SELECT
+                id,
+                number_of_publications,
+                first_name,
+                last_name,
+                date_of_birth,
+                is_active
+            FROM
+                openapi_tutorial
+            """
         )
         
         for try await (id, number_of_publications, first_name, last_name, date_of_birth, is_active) in stream.decode((String, Int, String, String, Date, Bool).self) {
@@ -148,9 +148,24 @@ struct APIServiceImpl: APIProtocol {
                             WHERE id = \(guid)
                             """
         
-        print("\(APIServiceImpl.dateFormatter.date(from: dateOfBirth))")
         try await self.client.query(query)
         
         return .ok(.init())
+    }
+    
+    func deletePersonById(_ input: APIService.Operations.deletePersonById.Input) async throws -> APIService.Operations.deletePersonById.Output {
+        let guid = UUID(uuidString: input.path.id)
+        
+        let stream = try await client.query(
+            """
+            DELETE FROM openapi_tutorial WHERE id = \(guid) RETURNING id
+            """
+        )
+        
+        if try await stream.decode(UUID.self).first(where: { _ in true }) != nil {
+            return .noContent(.init())
+        }
+        
+        return .notFound(.init())
     }
 }
